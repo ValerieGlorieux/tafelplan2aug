@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Vind jouw tafel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #container {
+      background: white;
+      padding: 2em 3em;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 0.5em;
+      margin-bottom: 1em;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+    }
+    button {
+      padding: 0.5em 1.2em;
+      background: #007ACC;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1.5em;
+      font-size: 1.1em;
+      color: #333;
+      min-height: 2em;
+    }
+    #tafelmap {
+      margin-top: 1.2em;
+      display: none;
+    }
+    #tafelmap img {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: auto;
+    }
+    @media (max-width: 500px) {
+      #container { width: 95vw; padding: 1em 0.3em; }
+      #tafelmap img { height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>Vul je voornaam en de eerste letter van je familienaam in.</h2>
+    <form id="guestForm">
+      <input type="text" id="guestName" placeholder="Vul je naam in" required autocomplete="off"/>
+      <br>
+      <button type="submit">Vind mijn tafel</button>
+    </form>
+    <div id="result"></div>
+    <div id="tafelmap">
+      <img src="tafelplan.jpg" alt="Tafelplan"/>
+    </div>
+  </div>
+  <script>
+    // Gastentafel: naam -> tafelnummer
+    const guestList = {
+      "Valerie G": "1", "Wim E": "1", "Eva V": "1", "Janes D": "1", "Frederik D": "1", "Dirk L": "1", "Kristel V": "1", "Inne D": "1", "Sebastien R": "1", "Lien V": "1", "Katelijne L": "1", "Thomas M": "1", "Marie F": "1", "Laura M": "1", "Kaat D": "1", "Mikhaïl R": "1",
+      "Tom D": "2", "Dorien P": "2", "Gert V": "2", "Emilie M": "2", "Steven V": "2", "Rani V": "2", "Nick D": "2", "Pieterjan P": "2", "Bo G": "2", "Nils  D": "2", "Skyla D": "2",
+      "Adélaïde V": "3", "Jonas D": "3", "Madieke M": "3", "Lander C": "3", "Julie D": "3", "Toon D": "3", "Armin D": "3", "Babs V": "3", "Vincent D": "3", "Maxime V": "3", "Suzanne B": "3",
+      "Marc G": "4", "Nelle V": "4", "Lore V": "4", "Kobe V": "4", "Adrienne D": "4", "Andries L": "4", "José G": "4", "Paul D": "4", "Gerda D": "4",
+      "Paul E": "5", "Nadine V": "5", "Eddy V": "5", "Linda V": "5", "Jean-Paul V": "5", "Karin H": "5", "Ronny W": "5", "Martine E": "5", "Patrick D": "5", "Annemie V": "5",
+      "Hans T": "6", "Lisiane W": "6", "Louiza S": "6", "Rudi W": "6", "Karin V": "6", "Rita V": "6", "Luc M": "6", "Claudine D": "6", "Nancy B": "6", "Hugo D": "6", "Marijke V": "6", "Thierry A": "6",
+      "Jan E": "7", "Carolien D": "7", "Jeroen C": "7", "Milena V": "7", "Lennart V": "7", "Eva M": "7", "Jan V": "7", "Joris L": "7", "Bert F": "7",
+      "Piet V": "8", "Griet V": "8", "Koen G": "8", "Steven D": "8", "Anouk D": "8", "Frederik T": "8", "Els C": "8",
+      "Charlotte G": "9", "Elmer D": "9", "Julie W": "9", "Yannick S": "9", "Nele N": "9", "Yorrick D": "9", "Daan T": "9", "Annemie R": "9", "Stijn T": "9",
+      "Nathan E": "10", "Lander E": "10", "Kamil E": "10", "Gust E": "10", "Brent L": "10", "Lenne L": "10", "Lukas V": "10", "Elize V": "10",
+      "Alexander B": "11", "Elena L": "11", "Justien V": "11", "Victor D": "11", "Laurence K": "11", "Skrolan B": "11", "Lode G": "11", "Sylvie G": "11", "William L": "11", "Nel V": "11", "Geoffrey D": "11"
+    };
+
+    const resultDiv = document.getElementById('result');
+    const mapDiv = document.getElementById('tafelmap');
+
+    document.getElementById('guestForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('guestName').value.trim();
+      // Case-insensitive lookup
+      const foundEntry = Object.entries(guestList).find(
+        ([guestName]) => guestName.toLowerCase() === nameInput.toLowerCase()
+      );
+      if (foundEntry) {
+        resultDiv.textContent = `Welkom! Je zit aan tafel ${foundEntry[1]}.`;
+        mapDiv.style.display = "block";
+      } else {
+        resultDiv.textContent = "Sorry, we konden je naam niet vinden. Controleer de spelling of vraag hulp.";
+        mapDiv.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
